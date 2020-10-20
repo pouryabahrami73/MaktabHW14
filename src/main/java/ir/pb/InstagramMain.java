@@ -2,11 +2,16 @@ package ir.pb;
 
 import ir.pb.domains.Account;
 
+import ir.pb.domains.Post;
+import ir.pb.domains.Reply;
 import ir.pb.services.menu.AccountService;
 import ir.pb.services.menu.PostService;
+import ir.pb.services.menu.ReplyService;
+import ir.pb.services.menu.TransactionService;
 
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -14,6 +19,8 @@ public class InstagramMain {
     public static void main(String[] args) throws NoSuchMethodException, IllegalAccessException,
             InvocationTargetException {
         AccountService accountService = new AccountService();
+        TransactionService transactionService = new TransactionService();
+        ReplyService replyService = new ReplyService();
 
         System.out.println("\u001B[33m" + "WELCOME TO pb INSTAGRAM BEING REVERSED ENGINEER APPLICATION" + "\u001B[0m");
         System.out.println("\u001B[36mplease be careful you can write word \"back\"" +
@@ -34,17 +41,39 @@ public class InstagramMain {
                 }
             } while (true);
             if (choice == 1) {
+                int sortMode = 0;
+                lable10 : do {
+                    System.out.println("Please choose your account mode :\n1. Sort posts by likes\n2. Sort posts by time");
+                    try {
+                        Scanner intIn = new Scanner(System.in);
+                        String choiceHelper = intIn.nextLine();
+                        if (choiceHelper.equals("back")) {
+                            continue lable1;
+                        } else {
+                            sortMode = Integer.parseInt(choiceHelper);
+                            break lable10;
+                        }
+                    } catch (NoSuchElementException exception) {
+                        System.err.println("WRONG CHOICE !!!");
+                        continue lable1;
+                    }
+                } while (true);
                 Account account = new AccountService().signIn();
                 if (account == null) {
                     continue;
                 }
-                accountService.showFollowingsPosts(account);
+                HashMap<Integer, Post> postsOfFollowings = null;
+                if(true) {
+                    postsOfFollowings = accountService.showFollowingsPosts(account);
+                }else {
+                }
                 int choice2 = 0;
                 lable2:
                 do {
                     lable6:
                     do {
-                        System.out.println("1. Edit your Account\n2. Search an account\n3. Post\n4. Reply a comment");
+                        System.out.println("1. Edit your Account\n2. Search an account\n3. Post\n4. Reply a comment\n" +
+                                "5. write a comment\n6. like a post");
                         try {
                             Scanner intIn = new Scanner(System.in);
                             String choiceHelper = intIn.nextLine();
@@ -115,6 +144,60 @@ public class InstagramMain {
                                 continue lable4;
                             }
                         } while (true);
+                    }else if(choice2 == 4){
+                        int postsChoice = 0;
+                        lable7 : do {
+                            System.out.println("Select one of the posts above :");
+                            try {
+                                Scanner intIn = new Scanner(System.in);
+                                String choiceHelper = intIn.nextLine();
+                                if(choiceHelper.equals("back")){
+                                    continue lable2;
+                                }else{
+                                    postsChoice = Integer.parseInt(choiceHelper);
+                                }
+                            }catch (Exception exception){
+                                System.err.println("TRY AGAIN !!!");
+                            }
+                            transactionService.like(account, postsOfFollowings.get(postsChoice));
+                            continue lable2;
+                        }while(true);
+                    }else if (choice2 == 5){
+                        int postsChoice = 0;
+                        lable8 : do {
+                            System.out.println("Select one of the posts above :");
+                            try {
+                                Scanner intIn = new Scanner(System.in);
+                                String choiceHelper = intIn.nextLine();
+                                if(choiceHelper.equals("back")){
+                                    continue lable2;
+                                }else{
+                                    postsChoice = Integer.parseInt(choiceHelper);
+                                }
+                            }catch (Exception exception){
+                                System.err.println("TRY AGAIN !!!");
+                            }
+                            transactionService.comment(account, postsOfFollowings.get(postsChoice));
+                            continue lable2;
+                        }while(true);
+                    }else if (choice2 == 6) {
+                        int postsChoice = 0;
+                        lable9 : do {
+                            System.out.println("Select one of the posts above :");
+                            try {
+                                Scanner intIn = new Scanner(System.in);
+                                String choiceHelper = intIn.nextLine();
+                                if(choiceHelper.equals("back")){
+                                    continue lable2;
+                                }else{
+                                    postsChoice = Integer.parseInt(choiceHelper);
+                                }
+                            }catch (Exception exception){
+                                System.err.println("TRY AGAIN !!!");
+                            }
+                            replyService.reply(postsOfFollowings.get(postsChoice));
+                            continue lable2;
+                        }while(true);
                     }
                 } while (true);
             } else if (choice == 2) {

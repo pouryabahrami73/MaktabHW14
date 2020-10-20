@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-public class Transaction extends BaseEntity<Long> {
+public class Comment extends BaseEntity<Long> {
     @ManyToOne
     @JoinColumn(name = "fk_sourceAccount", nullable = false)
     private Account sourceAccount;
@@ -19,10 +19,8 @@ public class Transaction extends BaseEntity<Long> {
     private String time;
     @Column(columnDefinition = "text")
     private String content;
-    @Column
-    private String type;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "transaction")
-    private List<Reply> reply;
+    private List<Comment> reply;
 
     /*public Transaction(Account sourceAccount, Post destPost, String content, String type) {
         this.sourceAccount = sourceAccount;
@@ -34,23 +32,17 @@ public class Transaction extends BaseEntity<Long> {
         this.type = "Comment";
     }*/
 
-    public Transaction(Account sourceAccount, Post destPost) {
-        this.sourceAccount = sourceAccount;
-        this.destPost = destPost;
-        Date time = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        this.time = formatter.format(time);
-        this.type = "Like";
+    public Comment() {
     }
 
-    public Transaction(Account sourceAccount, Post destPost, String content) {
+
+    public Comment(Account sourceAccount, Post destPost, String content) {
         this.sourceAccount = sourceAccount;
         this.destPost = destPost;
         Date time = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         this.time = formatter.format(time);
         this.content = content;
-        this.type = "Comment";
     }
 
     public Account getSourceAccount() {
@@ -80,11 +72,11 @@ public class Transaction extends BaseEntity<Long> {
     }
 
 
-    public List<Reply> getReply() {
+    public List<Comment> getReply() {
         return reply;
     }
 
-    public void setReply(Reply reply) {
+    public void setReply(Comment reply) {
         this.reply.add(reply);
     }
 
@@ -96,11 +88,4 @@ public class Transaction extends BaseEntity<Long> {
         this.content = content;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 }

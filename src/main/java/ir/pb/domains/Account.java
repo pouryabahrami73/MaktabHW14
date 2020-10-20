@@ -20,7 +20,7 @@ public class Account extends BaseEntity<Long> {
     private String phoneNumber;
     @Column
     private String status;
-    @Column
+    @Column(unique = true)
     private String emailAddress;
     @ManyToMany
     @JoinTable(name = "account_follower", joinColumns = {@JoinColumn(name = "fk_account")},
@@ -32,8 +32,8 @@ public class Account extends BaseEntity<Long> {
     private List<Account> followings = new ArrayList<>();
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "sourceAccount", orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "sourceAccount")
-    private List<Transaction> transactions = new ArrayList<>();
+    /*@OneToMany(cascade = CascadeType.ALL, mappedBy = "sourceAccount")
+    private List<Comment> comments = new ArrayList<>();*/
 
     public Account() {
     }

@@ -3,6 +3,7 @@ package ir.pb.repositories.impl;
 import com.google.common.hash.Hashing;
 import ir.pb.domains.Account;
 import ir.pb.domains.Post;
+import ir.pb.domains.Transaction;
 import ir.pb.repositories.AccountRepository;
 import ir.pb.services.impl.EntityManagerMaker;
 import org.junit.jupiter.api.Assertions;
@@ -38,6 +39,7 @@ class AccountRepositoryImplTest {
         Post post3 = new Post("Salam 2", account2);
         Post post4 = new Post("Salam 3", account3);
         Post post5 = new Post("Salam 4", account4);
+        Transaction transaction = new Transaction(account2, post3);
         // question should be asked!!!
         account.setPost(post2);
         account.setPost(post);

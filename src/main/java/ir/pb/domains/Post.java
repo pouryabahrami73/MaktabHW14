@@ -6,6 +6,7 @@ import ir.pb.base.domians.BaseEntity;
 
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,11 +16,15 @@ public class Post extends BaseEntity<Long> {
     @JoinColumn(name = "fk_source_account", nullable = false)
     private Account sourceAccount;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "destPost")
-    private List<Transaction> transactions;
+    private List<Comment> Comments;
     @Column
     private String time;
     @Column(columnDefinition = "text")
     private String content;
+    @ManyToMany
+    @JoinTable(name = "post_likes", joinColumns = {@JoinColumn(name = "fk_post")},
+            inverseJoinColumns = {@JoinColumn(name = "fk_account")})
+    private List<Account> likes = new ArrayList<>();
 
     public Post() {
     }
@@ -40,12 +45,12 @@ public class Post extends BaseEntity<Long> {
         this.sourceAccount = sourceAccount;
     }
 
-    public List<Transaction> getTransactions() {
-        return transactions;
+    public List<Comment> getTransactions() {
+        return Comments;
     }
 
-    public void setTransaction(Transaction transaction) {
-        this.transactions.add(transaction);
+    public void setTransaction(Comment transaction) {
+        this.Comments.add(transaction);
     }
 
     public String getTime() {

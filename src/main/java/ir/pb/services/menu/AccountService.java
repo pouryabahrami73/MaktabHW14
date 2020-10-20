@@ -166,14 +166,17 @@ public class AccountService {
         }
     }
 
-    public void showFollowingsPosts(Account account){
-        List<Post> followingsPosts = new ArrayList<>();
-        account.getFollowings().stream().forEach(following -> following.getPosts().stream().forEach(post ->
-                System.out.println(following.getUserName() + " posted : " + post.getContent() + "   " +
-                        post.getTime() + "\n" + post.getTransactions() + " people liked")));
+    public HashMap<Integer, Post> showFollowingsPosts(Account account){
+        HashMap<Integer, Post> followingsPosts = new HashMap<>();
+        AtomicInteger i = new AtomicInteger(1);
+        account.getFollowings().stream().forEach(following -> following.getPosts().stream().forEach(post ->{
+            followingsPosts.put(i.getAndIncrement(), post);
+                System.out.println(i + ". " + following.getUserName() + " posted : " + post.getContent() + "   " +
+                        post.getTime() + "\n" + post.getLikes() + " people liked");}));
+        return followingsPosts;
     }
 
-    public void searchAnAccount(){
+    public Account searchAnAccount(){
         Scanner strIn = new Scanner(System.in);
         System.out.println("Please enter the account you want to search :");
         String accountName = strIn.nextLine();
@@ -185,6 +188,7 @@ public class AccountService {
         }else {
             System.err.println("NO ACCOUNT FOUND");
         }
+        return account;
     }
 
 

@@ -89,7 +89,5 @@ public class BaseRepositoryImpl<E extends BaseEntity<PK>, PK extends Serializabl
 
     public void commitEntityManager(){
         entityManager.getTransaction().commit();
-        entityManager.close();
-        entityManager.getTransaction().begin();
     }
 }
